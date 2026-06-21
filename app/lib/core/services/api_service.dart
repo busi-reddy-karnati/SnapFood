@@ -23,7 +23,9 @@ class ApiService {
   }) async {
     final body = <String, dynamic>{};
     if (name != null) body['name'] = name;
-    if (dietaryPreferences != null) body['dietary_preferences'] = dietaryPreferences;
+    if (dietaryPreferences != null) {
+      body['dietary_preferences'] = dietaryPreferences;
+    }
     if (cuisines != null) body['cuisines'] = cuisines;
     return Household.fromJson(await _api.put(ApiEndpoints.household, body));
   }
@@ -41,7 +43,8 @@ class ApiService {
   }
 
   Future<void> setGoal(String description, {Map<String, dynamic>? target}) =>
-      _api.put(ApiEndpoints.goal, {'description': description, 'target': target ?? {}});
+      _api.put(ApiEndpoints.goal,
+          {'description': description, 'target': target ?? {}});
 
   Future<void> setSchedule(List<dynamic> meals) =>
       _api.put(ApiEndpoints.schedule, {'meals': meals});
@@ -53,7 +56,10 @@ class ApiService {
   }
 
   Future<PantryItem> addPantryItem(String name,
-      {String? category, double? quantity, String? unit, String status = 'ok'}) async {
+      {String? category,
+      double? quantity,
+      String? unit,
+      String status = 'ok'}) async {
     return PantryItem.fromJson(await _api.post(ApiEndpoints.pantry, {
       'name': name,
       if (category != null) 'category': category,
@@ -64,7 +70,8 @@ class ApiService {
   }
 
   Future<PantryItem> updatePantryStatus(String itemId, String status) async =>
-      PantryItem.fromJson(await _api.put(ApiEndpoints.pantryItem(itemId), {'status': status}));
+      PantryItem.fromJson(
+          await _api.put(ApiEndpoints.pantryItem(itemId), {'status': status}));
 
   Future<void> deletePantryItem(String itemId) =>
       _api.delete(ApiEndpoints.pantryItem(itemId));
@@ -89,7 +96,8 @@ class ApiService {
       _api.delete(ApiEndpoints.groceryItem(itemId));
 
   // --- Intake / suggestions / feedback / history ----------------------- #
-  Future<IntakeResult> intake({String? text, String? imageBase64, String? imageMime}) async {
+  Future<IntakeResult> intake(
+      {String? text, String? imageBase64, String? imageMime}) async {
     return IntakeResult.fromJson(await _api.post(ApiEndpoints.intake, {
       if (text != null) 'text': text,
       if (imageBase64 != null) 'image_base64': imageBase64,
@@ -98,14 +106,16 @@ class ApiService {
   }
 
   Future<Suggestion> generateSuggestions(List<String> kinds) async =>
-      Suggestion.fromJson(await _api.post(ApiEndpoints.suggestions, {'kinds': kinds}));
+      Suggestion.fromJson(
+          await _api.post(ApiEndpoints.suggestions, {'kinds': kinds}));
 
   Future<List<Suggestion>> listSuggestions() async {
     final list = await _api.get(ApiEndpoints.suggestions) as List;
     return list.map((e) => Suggestion.fromJson((e as Map).cast())).toList();
   }
 
-  Future<void> sendFeedback(String suggestionId, String rating, {String? comment}) =>
+  Future<void> sendFeedback(String suggestionId, String rating,
+          {String? comment}) =>
       _api.post(ApiEndpoints.feedback, {
         'suggestion_id': suggestionId,
         'rating': rating,

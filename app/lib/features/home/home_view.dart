@@ -19,7 +19,13 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   int _index = 0;
 
-  static const _titles = ['Capture', 'Pantry', 'Grocery', 'Suggestions', 'History'];
+  static const _titles = [
+    'Capture',
+    'Pantry',
+    'Grocery',
+    'Suggestions',
+    'History'
+  ];
   final _pages = const [
     IntakeView(),
     PantryView(),
@@ -52,9 +58,11 @@ class _HomeViewState extends State<HomeView> {
         selectedIndex: _index,
         onDestinationSelected: (i) => setState(() => _index = i),
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.add_circle_outline), label: 'Capture'),
+          NavigationDestination(
+              icon: Icon(Icons.add_circle_outline), label: 'Capture'),
           NavigationDestination(icon: Icon(Icons.kitchen), label: 'Pantry'),
-          NavigationDestination(icon: Icon(Icons.shopping_cart), label: 'Grocery'),
+          NavigationDestination(
+              icon: Icon(Icons.shopping_cart), label: 'Grocery'),
           NavigationDestination(icon: Icon(Icons.auto_awesome), label: 'Ideas'),
           NavigationDestination(icon: Icon(Icons.history), label: 'History'),
         ],

@@ -19,7 +19,8 @@ class _SuggestionsViewState extends State<SuggestionsView> {
   Future<void> _generate() async {
     setState(() => _loading = true);
     try {
-      final s = await _api.generateSuggestions(['grocery_list', 'cook_with_pantry']);
+      final s =
+          await _api.generateSuggestions(['grocery_list', 'cook_with_pantry']);
       if (mounted) setState(() => _current = s);
     } catch (e) {
       if (mounted) showError(context, e);
@@ -46,7 +47,10 @@ class _SuggestionsViewState extends State<SuggestionsView> {
     if (_current == null) return;
     try {
       await _api.sendFeedback(_current!.suggestionId, rating);
-      if (mounted) showInfo(context, rating == 'up' ? 'Glad you liked it!' : "Thanks — we'll adjust.");
+      if (mounted) {
+        showInfo(context,
+            rating == 'up' ? 'Glad you liked it!' : "Thanks — we'll adjust.");
+      }
     } catch (e) {
       if (mounted) showError(context, e);
     }
@@ -72,11 +76,13 @@ class _SuggestionsViewState extends State<SuggestionsView> {
                 if (s.rationale.isNotEmpty)
                   Padding(
                     padding: const EdgeInsets.only(bottom: 12),
-                    child: Text(s.rationale, style: const TextStyle(fontStyle: FontStyle.italic)),
+                    child: Text(s.rationale,
+                        style: const TextStyle(fontStyle: FontStyle.italic)),
                   ),
                 if (s.grocery.isNotEmpty) ...[
                   const Text('Suggested groceries',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 8),
                   ...s.grocery.map((g) {
                     final item = (g as Map).cast<String, dynamic>();
@@ -96,11 +102,13 @@ class _SuggestionsViewState extends State<SuggestionsView> {
                 if (s.recipes.isNotEmpty) ...[
                   const SizedBox(height: 16),
                   const Text('Cook with what you have',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 8),
                   ...s.recipes.map((r) {
                     final recipe = (r as Map).cast<String, dynamic>();
-                    final uses = (recipe['uses_pantry'] as List?)?.join(', ') ?? '';
+                    final uses =
+                        (recipe['uses_pantry'] as List?)?.join(', ') ?? '';
                     final needs = (recipe['needs'] as List?)?.join(', ') ?? '';
                     return Card(
                       child: ListTile(

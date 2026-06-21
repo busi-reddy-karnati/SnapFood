@@ -89,9 +89,11 @@ class _IntakeViewState extends State<IntakeView> {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        const Text('What do you need?', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+        const Text('What do you need?',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
         const SizedBox(height: 4),
-        const Text('e.g. "Rice is almost over, order it next time" or "I want lamb next week".',
+        const Text(
+            'e.g. "Rice is almost over, order it next time" or "I want lamb next week".',
             style: TextStyle(color: Colors.grey)),
         const SizedBox(height: 16),
         TextField(
@@ -126,7 +128,9 @@ class _IntakeViewState extends State<IntakeView> {
               onPressed: _sending ? null : () => _send(),
               icon: _sending
                   ? const SizedBox(
-                      height: 16, width: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                      height: 16,
+                      width: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2))
                   : const Icon(Icons.send),
               label: const Text('Send'),
             ),
@@ -140,17 +144,20 @@ class _IntakeViewState extends State<IntakeView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(_result!.message, style: const TextStyle(fontWeight: FontWeight.w600)),
+                  Text(_result!.message,
+                      style: const TextStyle(fontWeight: FontWeight.w600)),
                   if (_result!.applied.isEmpty)
                     const Padding(
                       padding: EdgeInsets.only(top: 8),
-                      child: Text('Noted for your next plan.', style: TextStyle(color: Colors.grey)),
+                      child: Text('Noted for your next plan.',
+                          style: TextStyle(color: Colors.grey)),
                     )
                   else
                     ..._result!.applied.map((a) => Padding(
                           padding: const EdgeInsets.only(top: 8),
                           child: Row(children: [
-                            const Icon(Icons.check_circle, size: 18, color: Colors.green),
+                            const Icon(Icons.check_circle,
+                                size: 18, color: Colors.green),
                             const SizedBox(width: 8),
                             Expanded(child: Text(a)),
                           ]),

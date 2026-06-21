@@ -24,7 +24,10 @@ class Member {
 }
 
 class Goal {
-  Goal({required this.goalId, required this.description, this.target = const {}});
+  Goal(
+      {required this.goalId,
+      required this.description,
+      this.target = const {}});
 
   final String goalId;
   final String description;

@@ -23,7 +23,12 @@ class _OnboardingViewState extends State<OnboardingView> {
   bool _saving = false;
 
   static const _diets = [
-    'no preference', 'vegetarian', 'vegan', 'pescatarian', 'halal', 'kosher',
+    'no preference',
+    'vegetarian',
+    'vegan',
+    'pescatarian',
+    'halal',
+    'kosher',
   ];
 
   @override
@@ -69,7 +74,8 @@ class _OnboardingViewState extends State<OnboardingView> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          const Text('Tell us a little so we can plan meals for your household.',
+          const Text(
+              'Tell us a little so we can plan meals for your household.',
               style: TextStyle(fontSize: 16)),
           const SizedBox(height: 24),
           const Text('Dietary preference'),
@@ -110,7 +116,9 @@ class _OnboardingViewState extends State<OnboardingView> {
             onPressed: _saving ? null : _finish,
             child: _saving
                 ? const SizedBox(
-                    height: 18, width: 18, child: CircularProgressIndicator(strokeWidth: 2))
+                    height: 18,
+                    width: 18,
+                    child: CircularProgressIndicator(strokeWidth: 2))
                 : const Text('Get started'),
           ),
         ],

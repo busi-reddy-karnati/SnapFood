@@ -26,7 +26,8 @@ class Suggestion {
 }
 
 class IntakeResult {
-  IntakeResult({required this.message, this.applied = const [], this.intentType});
+  IntakeResult(
+      {required this.message, this.applied = const [], this.intentType});
 
   final String message;
   final List<String> applied;

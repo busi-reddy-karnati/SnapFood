@@ -18,34 +18,42 @@ class SettingsView extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        const Text('Goal', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+        const Text('Goal',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
         ListTile(
           contentPadding: EdgeInsets.zero,
           title: Text(household?.goal?.description ?? 'No goal set'),
           trailing: const Icon(Icons.edit),
           onTap: () async {
-            final value = await _editText(context, 'Your goal', household?.goal?.description ?? '');
+            final value = await _editText(
+                context, 'Your goal', household?.goal?.description ?? '');
             if (value == null || value.isEmpty) return;
             try {
               await api.setGoal(value);
-              if (context.mounted) await context.read<AppState>().refreshHousehold();
+              if (context.mounted) {
+                await context.read<AppState>().refreshHousehold();
+              }
             } catch (e) {
               if (context.mounted) showError(context, e);
             }
           },
         ),
         const Divider(),
-        const Text('Diet', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+        const Text('Diet',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
         ListTile(
           contentPadding: EdgeInsets.zero,
-          title: Text(household?.dietaryPreferences['diet']?.toString() ?? 'no preference'),
-          subtitle: Text('Allergies: ${(household?.dietaryPreferences['allergies'] as List?)?.join(', ') ?? 'none'}'),
+          title: Text(household?.dietaryPreferences['diet']?.toString() ??
+              'no preference'),
+          subtitle: Text(
+              'Allergies: ${(household?.dietaryPreferences['allergies'] as List?)?.join(', ') ?? 'none'}'),
         ),
         const Divider(),
         Row(
           children: [
             const Expanded(
-              child: Text('Members', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+              child: Text('Members',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
             ),
             IconButton(
               icon: const Icon(Icons.person_add),
@@ -54,7 +62,9 @@ class SettingsView extends StatelessWidget {
                 if (name == null || name.isEmpty) return;
                 try {
                   await api.addMember(name);
-                  if (context.mounted) await context.read<AppState>().refreshHousehold();
+                  if (context.mounted) {
+                    await context.read<AppState>().refreshHousehold();
+                  }
                 } catch (e) {
                   if (context.mounted) showError(context, e);
                 }
@@ -71,7 +81,9 @@ class SettingsView extends StatelessWidget {
                 onPressed: () async {
                   try {
                     await api.deleteMember(m.memberId);
-                    if (context.mounted) await context.read<AppState>().refreshHousehold();
+                    if (context.mounted) {
+                      await context.read<AppState>().refreshHousehold();
+                    }
                   } catch (e) {
                     if (context.mounted) showError(context, e);
                   }
@@ -101,7 +113,9 @@ Future<String?> _editText(BuildContext context, String title, String initial) {
       title: Text(title),
       content: TextField(controller: controller, autofocus: true),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+        TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel')),
         FilledButton(
           onPressed: () => Navigator.pop(context, controller.text.trim()),
           child: const Text('Save'),

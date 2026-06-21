@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 /// Small shared UI helpers.
 void showError(BuildContext context, Object error) {
   ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text(error.toString()), backgroundColor: Colors.red.shade700),
+    SnackBar(
+        content: Text(error.toString()), backgroundColor: Colors.red.shade700),
   );
 }
 
@@ -24,7 +25,9 @@ class EmptyState extends StatelessWidget {
         children: [
           Icon(icon, size: 48, color: Colors.grey),
           const SizedBox(height: 12),
-          Text(message, textAlign: TextAlign.center, style: const TextStyle(color: Colors.grey)),
+          Text(message,
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.grey)),
         ],
       ),
     );

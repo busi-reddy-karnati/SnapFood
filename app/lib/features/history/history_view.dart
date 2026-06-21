@@ -21,8 +21,9 @@ class _HistoryViewState extends State<HistoryView> {
     _future = _api.getHistory();
   }
 
-  String _fmt(DateTime? d) =>
-      d == null ? '' : '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+  String _fmt(DateTime? d) => d == null
+      ? ''
+      : '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +36,8 @@ class _HistoryViewState extends State<HistoryView> {
             return const Center(child: CircularProgressIndicator());
           }
           if (snap.hasError) {
-            return EmptyState(icon: Icons.error_outline, message: snap.error.toString());
+            return EmptyState(
+                icon: Icons.error_outline, message: snap.error.toString());
           }
           final items = snap.data ?? [];
           if (items.isEmpty) {
@@ -53,7 +55,8 @@ class _HistoryViewState extends State<HistoryView> {
               return ListTile(
                 leading: const Icon(Icons.receipt_long),
                 title: Text(s.kind.replaceAll('_', ' ')),
-                subtitle: Text('$groceryCount groceries · $recipeCount recipes · ${_fmt(s.createdAt)}'),
+                subtitle: Text(
+                    '$groceryCount groceries · $recipeCount recipes · ${_fmt(s.createdAt)}'),
               );
             },
           );

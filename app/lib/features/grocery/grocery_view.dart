@@ -35,7 +35,9 @@ class _GroceryViewState extends State<GroceryView> {
           decoration: const InputDecoration(hintText: 'Item name'),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel')),
           FilledButton(
             onPressed: () => Navigator.pop(context, controller.text.trim()),
             child: const Text('Add'),
@@ -55,7 +57,8 @@ class _GroceryViewState extends State<GroceryView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(onPressed: _add, child: const Icon(Icons.add)),
+      floatingActionButton:
+          FloatingActionButton(onPressed: _add, child: const Icon(Icons.add)),
       body: RefreshIndicator(
         onRefresh: () async => _reload(),
         child: FutureBuilder<List<GroceryItem>>(
@@ -65,13 +68,16 @@ class _GroceryViewState extends State<GroceryView> {
               return const Center(child: CircularProgressIndicator());
             }
             if (snap.hasError) {
-              return EmptyState(icon: Icons.error_outline, message: snap.error.toString());
+              return EmptyState(
+                  icon: Icons.error_outline, message: snap.error.toString());
             }
             final items = snap.data ?? [];
             if (items.isEmpty) {
               return ListView(children: const [
                 SizedBox(height: 120),
-                EmptyState(icon: Icons.shopping_cart, message: 'Your grocery list is empty.'),
+                EmptyState(
+                    icon: Icons.shopping_cart,
+                    message: 'Your grocery list is empty.'),
               ]);
             }
             return ListView.builder(
@@ -91,17 +97,20 @@ class _GroceryViewState extends State<GroceryView> {
                     try {
                       await _api.removeGroceryItem(item.itemId);
                     } catch (e) {
-                      if (mounted) showError(context, e);
+                      if (context.mounted) showError(context, e);
                     }
                   },
                   child: ListTile(
                     leading: Icon(
-                      item.source == 'suggested' ? Icons.auto_awesome : Icons.edit,
+                      item.source == 'suggested'
+                          ? Icons.auto_awesome
+                          : Icons.edit,
                       size: 18,
                       color: Colors.grey,
                     ),
                     title: Text(item.name),
-                    subtitle: item.category != null ? Text(item.category!) : null,
+                    subtitle:
+                        item.category != null ? Text(item.category!) : null,
                   ),
                 );
               },
