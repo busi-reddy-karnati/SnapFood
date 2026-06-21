@@ -1,0 +1,37 @@
+# SnapFood fastlane lanes.
+#
+# These upload already-built artifacts (the GitHub Actions workflow runs the
+# `flutter build` step). iOS -> TestFlight, Android -> Google Play internal.
+
+platform :ios do
+  desc "Upload the built IPA to TestFlight"
+  lane :beta do
+    api_key = app_store_connect_api_key(
+      key_id: ENV["ASC_KEY_ID"],
+      issuer_id: ENV["ASC_ISSUER_ID"],
+      key_filepath: ENV["ASC_KEY_PATH"],
+      in_house: false
+    )
+    upload_to_testflight(
+      api_key: api_key,
+      ipa: ENV.fetch("IPA_PATH", "../build/ios/ipa/snapfood.ipa"),
+      skip_waiting_for_build_processing: true
+    )
+  end
+end
+
+platform :android do
+  desc "Upload the built AAB to the Google Play internal track"
+  lane :beta do
+    upload_to_play_store(
+      track: "internal",
+      aab: ENV.fetch("AAB_PATH", "../build/app/outputs/bundle/release/app-release.aab"),
+      json_key: ENV["PLAY_JSON_KEY_PATH"],
+      skip_upload_apk: true,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      release_status: "draft"
+    )
+  end
+end

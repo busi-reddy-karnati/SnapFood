@@ -1,0 +1,5 @@
+# iOS
+app_identifier("com.snapfood.app")
+
+# Android
+package_name("com.snapfood.app")
