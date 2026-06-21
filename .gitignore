@@ -16,6 +16,29 @@ out/
 .env.*
 !.env.example
 
+# Python (backend)
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+*.sqlite3
+
+# Flutter / Dart (app)
+app/.dart_tool/
+app/.flutter-plugins
+app/.flutter-plugins-dependencies
+app/build/
+app/ios/Pods/
+app/ios/.symlinks/
+app/android/.gradle/
+app/android/local.properties
+*.iml
+
+# Fastlane
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/test_output
+
 # OS files
 .DS_Store
 Thumbs.db
