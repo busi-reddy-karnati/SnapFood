@@ -1,8 +1,22 @@
 # Installation
 
+## Quick Start (Make)
+
+The fastest way to get SnapFood running locally is with `make`:
+
+```
+make setup        # first-time: venv, deps, migrate, seed, flutter pub get
+make backend-bg   # start backend in background
+make emulator     # start Android emulator
+make run-app      # build and run SnapFood on the emulator
+make health       # verify backend is up
+```
+
+See all available targets with `make help` or read the `Makefile` at the repo root.
+
 ## Prerequisites
 
-- Python 3.13
+- Python 3.12+
 - PostgreSQL 14+
 - Flutter SDK (stable channel) with Xcode (iOS) and/or Android SDK
 - A Google Gemini API key
@@ -23,6 +37,19 @@ uvicorn app.main:app --reload   # serves on http://localhost:8000
 ```
 
 Health check: `curl http://localhost:8000/api/v1/health` → `{"status":"ok"}`.
+
+### Seed data (optional)
+
+Populate the database with a demo household, pantry, and grocery list:
+
+```bash
+cd backend
+source .venv/bin/activate
+pip install psycopg2-binary
+python seed.py
+```
+
+This is idempotent — it is safe to run multiple times.
 
 ## App
 
