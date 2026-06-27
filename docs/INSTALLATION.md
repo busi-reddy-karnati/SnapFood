@@ -28,7 +28,7 @@ cd backend
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-cp .env.example .env            # then set GEMINI_API_KEY and DATABASE_URL
+cp .env.example .env            # GEMINI_API_KEY is required — the server won't start without it
 createdb snapfood               # or point DATABASE_URL at an existing Postgres
 
 export DATABASE_URL="postgresql+asyncpg://postgres:postgres@localhost/snapfood"
