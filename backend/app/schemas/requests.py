@@ -35,7 +35,7 @@ class ScheduleUpdateRequest(BaseModel):
 
 # --- Pantry ------------------------------------------------------------ #
 class PantryItemCreateRequest(BaseModel):
-    name: str = Field(max_length=200)
+    name: str = Field(min_length=1, max_length=200)
     category: str | None = Field(default=None, max_length=40)
     quantity: float | None = Field(default=None, ge=0)
     unit: str | None = Field(default=None, max_length=20)
@@ -52,7 +52,7 @@ class PantryItemUpdateRequest(BaseModel):
 
 # --- Grocery ----------------------------------------------------------- #
 class GroceryItemCreateRequest(BaseModel):
-    name: str = Field(max_length=200)
+    name: str = Field(min_length=1, max_length=200)
     category: str | None = Field(default=None, max_length=40)
     quantity: float | None = Field(default=None, ge=0)
     unit: str | None = Field(default=None, max_length=20)
