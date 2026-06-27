@@ -11,11 +11,11 @@ from fastapi import HTTPException
 from google import genai
 from google.genai import types
 
+from app.config import settings
+
 # Disable Gemini 2.5 "thinking" for extraction/generation tasks — it adds large
 # latency on structured outputs with little accuracy gain.
 _NO_THINKING = types.ThinkingConfig(thinking_budget=0)
-
-from app.config import settings
 
 logger = logging.getLogger(__name__)
 
