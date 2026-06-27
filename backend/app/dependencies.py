@@ -1,9 +1,13 @@
+import logging
 from typing import AsyncGenerator
 
 from fastapi import Header
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import AsyncSessionLocal
+
+logger = logging.getLogger(__name__)
 
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
@@ -11,7 +15,8 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
         try:
             yield session
             await session.commit()
-        except Exception:
+        except SQLAlchemyError:
+            logger.exception("Database session error")
             await session.rollback()
             raise
         finally:

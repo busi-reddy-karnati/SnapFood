@@ -30,14 +30,16 @@ class _SuggestionsViewState extends State<SuggestionsView> {
   }
 
   Future<void> _addToGrocery(Map<String, dynamic> item) async {
+    final name = item['name'];
+    if (name is! String || name.isEmpty) return;
     try {
       await _api.addGroceryItem(
-        item['name'] as String,
+        name,
         category: item['category'] as String?,
         quantity: (item['quantity'] as num?)?.toDouble(),
         unit: item['unit'] as String?,
       );
-      if (mounted) showInfo(context, 'Added ${item['name']} to grocery list');
+      if (mounted) showInfo(context, 'Added $name to grocery list');
     } catch (e) {
       if (mounted) showError(context, e);
     }
@@ -85,7 +87,10 @@ class _SuggestionsViewState extends State<SuggestionsView> {
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 8),
                   ...s.grocery.map((g) {
-                    final item = (g as Map).cast<String, dynamic>();
+                    final item = (g is Map)
+                        ? g.cast<String, dynamic>()
+                        : <String, dynamic>{};
+
                     final reason = item['reason'] as String?;
                     return Card(
                       child: ListTile(
@@ -106,7 +111,10 @@ class _SuggestionsViewState extends State<SuggestionsView> {
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                   const SizedBox(height: 8),
                   ...s.recipes.map((r) {
-                    final recipe = (r as Map).cast<String, dynamic>();
+                    final recipe = (r is Map)
+                        ? r.cast<String, dynamic>()
+                        : <String, dynamic>{};
+
                     final uses =
                         (recipe['uses_pantry'] as List?)?.join(', ') ?? '';
                     final needs = (recipe['needs'] as List?)?.join(', ') ?? '';

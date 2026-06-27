@@ -106,21 +106,50 @@ class SettingsView extends StatelessWidget {
 }
 
 Future<String?> _editText(BuildContext context, String title, String initial) {
-  final controller = TextEditingController(text: initial);
   return showDialog<String>(
     context: context,
-    builder: (context) => AlertDialog(
-      title: Text(title),
-      content: TextField(controller: controller, autofocus: true),
-      actions: [
-        TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel')),
-        FilledButton(
-          onPressed: () => Navigator.pop(context, controller.text.trim()),
-          child: const Text('Save'),
+    builder: (context) {
+      final controller = TextEditingController(text: initial);
+      return _DisposableDialog(
+        controller: controller,
+        child: AlertDialog(
+          title: Text(title),
+          content: TextField(controller: controller, autofocus: true),
+          actions: [
+            TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel')),
+            FilledButton(
+              onPressed: () => Navigator.pop(context, controller.text.trim()),
+              child: const Text('Save'),
+            ),
+          ],
         ),
-      ],
-    ),
+      );
+    },
   );
+}
+
+/// Wraps a dialog widget and disposes the given [TextEditingController] when
+/// removed from the widget tree, preventing a resource leak for controllers
+/// created inside showDialog callbacks.
+class _DisposableDialog extends StatefulWidget {
+  const _DisposableDialog({required this.controller, required this.child});
+
+  final TextEditingController controller;
+  final Widget child;
+
+  @override
+  State<_DisposableDialog> createState() => _DisposableDialogState();
+}
+
+class _DisposableDialogState extends State<_DisposableDialog> {
+  @override
+  void dispose() {
+    widget.controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
 }

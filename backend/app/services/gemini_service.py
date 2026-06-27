@@ -150,8 +150,8 @@ async def parse_input(
             ),
         )
     except Exception as exc:
-        logger.error("Gemini API error (intake): %s", exc)
-        raise HTTPException(status_code=502, detail=f"Gemini API error: {exc}") from exc
+        logger.exception("Gemini API error (intake): %s", exc)
+        raise HTTPException(status_code=502, detail="Gemini API error") from exc
 
     try:
         parsed = _strip_json(response.text)
@@ -194,8 +194,8 @@ async def generate_suggestions(*, today: str, profile: dict, kinds: list[str]) -
             ),
         )
     except Exception as exc:
-        logger.error("Gemini API error (suggestions): %s", exc)
-        raise HTTPException(status_code=502, detail=f"Gemini API error: {exc}") from exc
+        logger.exception("Gemini API error (suggestions): %s", exc)
+        raise HTTPException(status_code=502, detail="Gemini API error") from exc
 
     try:
         parsed = _strip_json(response.text)

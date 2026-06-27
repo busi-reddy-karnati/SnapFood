@@ -36,7 +36,11 @@ class _PantryViewState extends State<PantryView> {
 
   Future<void> _cycleStatus(PantryItem item) async {
     const order = ['ok', 'low', 'out'];
-    final next = order[(order.indexOf(item.status) + 1) % order.length];
+    // indexOf returns -1 if status is not in the list (e.g. an unexpected value);
+    // default to index 0 ('ok') so the cycle always starts from a known state.
+    final currentIndex = order.indexOf(item.status);
+    final safeIndex = currentIndex == -1 ? 0 : currentIndex;
+    final next = order[(safeIndex + 1) % order.length];
     try {
       await _api.updatePantryStatus(item.itemId, next);
       _reload();
@@ -111,25 +115,54 @@ class _PantryViewState extends State<PantryView> {
 }
 
 Future<String?> _promptName(BuildContext context, String title) {
-  final controller = TextEditingController();
   return showDialog<String>(
     context: context,
-    builder: (context) => AlertDialog(
-      title: Text(title),
-      content: TextField(
+    builder: (context) {
+      final controller = TextEditingController();
+      return _DisposableDialog(
         controller: controller,
-        autofocus: true,
-        decoration: const InputDecoration(hintText: 'Name'),
-      ),
-      actions: [
-        TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel')),
-        FilledButton(
-          onPressed: () => Navigator.pop(context, controller.text.trim()),
-          child: const Text('Add'),
+        child: AlertDialog(
+          title: Text(title),
+          content: TextField(
+            controller: controller,
+            autofocus: true,
+            decoration: const InputDecoration(hintText: 'Name'),
+          ),
+          actions: [
+            TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Text('Cancel')),
+            FilledButton(
+              onPressed: () => Navigator.pop(context, controller.text.trim()),
+              child: const Text('Add'),
+            ),
+          ],
         ),
-      ],
-    ),
+      );
+    },
   );
+}
+
+/// Wraps a dialog widget and disposes the given [TextEditingController] when
+/// removed from the widget tree, preventing a resource leak for controllers
+/// created inside showDialog callbacks.
+class _DisposableDialog extends StatefulWidget {
+  const _DisposableDialog({required this.controller, required this.child});
+
+  final TextEditingController controller;
+  final Widget child;
+
+  @override
+  State<_DisposableDialog> createState() => _DisposableDialogState();
+}
+
+class _DisposableDialogState extends State<_DisposableDialog> {
+  @override
+  void dispose() {
+    widget.controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
 }

@@ -20,6 +20,8 @@ from app.services.household_service import get_or_create_household
 
 router = APIRouter()
 
+VALID_STATUSES = frozenset({"ok", "low", "out"})
+
 DeviceDep = Annotated[str, Depends(device_uuid)]
 DbDep = Annotated[AsyncSession, Depends(get_db)]
 
@@ -53,11 +55,11 @@ async def _apply_pantry_update(db: AsyncSession, household_id: str, intent: dict
                 category=intent.get("category"),
                 quantity=intent.get("quantity"),
                 unit=intent.get("unit"),
-                status=status if status in {"ok", "low", "out"} else "ok",
+                status=status if status in VALID_STATUSES else "ok",
             )
         )
         return f"Added {name} to pantry ({status})"
-    existing.status = status if status in {"ok", "low", "out"} else existing.status
+    existing.status = status if status in VALID_STATUSES else existing.status
     if intent.get("quantity") is not None:
         existing.quantity = intent["quantity"]
     if intent.get("unit"):
@@ -131,7 +133,8 @@ async def intake(body: IntakeRequest, device: DeviceDep, db: DbDep) -> IntakeRes
         if msg:
             applied.append(msg)
 
-    primary_type = intents[0].get("type") if intents else "unknown"
+    first_intent = intents[0] if intents else {}
+    primary_type = first_intent.get("type") or "unknown"
     log = IntentLog(
         household_id=household.household_id,
         source="image" if image_bytes is not None else "text",

@@ -8,7 +8,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.feedback import Feedback
 from app.models.food_item import FoodItem
-from app.models.grocery_item import GroceryItem  # noqa: F401  (kept for parity/future use)
 from app.models.household import Household
 from app.models.intent_log import IntentLog
 from app.models.pantry_item import PantryItem
